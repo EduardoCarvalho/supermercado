@@ -1,6 +1,9 @@
 <?php
-    extract($_REQUEST);
+    extract($_POST, EXTR_PREFIX_ALL);
     session_start();
+
+    $login =     $_POST["login"];
+    $senha = md5($_POST["senha"]);
 
     require 'conexao.php';
 

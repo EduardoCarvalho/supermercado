@@ -26,10 +26,10 @@
       require 'conexao.php';
       extract($_POST, EXTR_PREFIX_ALL);
 
-      $nome  = $_POST["nome"];
-      $email = $_POST["email"];
-      $login = $_POST["login"];
-      $senha = $_POST["senha"];
+      $nome  =     $_POST["nome"];
+      $email =     $_POST["email"];
+      $login =     $_POST["login"];
+      $senha = md5($_POST["senha"]);
 
       if (isset($nome) && isset($email) && isset($login) && isset($senha)) {
         if ($conexao) {
