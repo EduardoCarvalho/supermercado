@@ -42,38 +42,64 @@
         $id_cliente = $_SESSION["id_cliente"];
         $nome       = $_POST["nome"];
         $preco      = $_POST["preco"];
+        $quantidade = $_POST["quantidade"];
 
 
         if (isset($id_produto)) {
-            if ($conexao) {
-              $sql_cria  = "INSERT INTO carrinho 
-                            VALUES (NULL, {$id_cliente}, {$id_produto}, '{$nome}', {$preco})";
-            }
-            else {
-              exit("<p>Falha na conexão: " . mysqli_connect_error());
-            }
+          if ($conexao) {
+            $sql_cria  = "INSERT INTO carrinho
+                          VALUES (NULL, {$id_cliente},
+                                        {$id_produto},
+                                       '{$nome}',
+                                        {$preco},
+                                        {$quantidade})";
+          }
+          else {
+            exit("<p>Falha na conexão: " . mysqli_connect_error());
+          }
 
-            if (mysqli_query($conexao, $sql_cria)) {
-              echo "<p>Linha inserida com sucesso!";
-            } 
-            else {
-              echo "<p>Erro ao inserir:<br>" .
-              $sql_cria . "<br>" . mysqli_error($conexao);
-            }
+          if (mysqli_query($conexao, $sql_cria)) {
+            echo "<p>Linha inserida com sucesso!";
+          } 
+          else {
+            echo "<p>Erro ao inserir:<br>" .
+            $sql_cria . "<br>" . mysqli_error($conexao);
+          }
         }
 
         if (isset($_GET["excluir"]) && $_GET["excluir"]==true) {
-          $id_selecao = $_GET["id_carrinho"];
           $sql_deleta  = "DELETE FROM carrinho 
                           WHERE id_carrinho = {$id_carrinho} 
                           LIMIT 1";
-          if ($resultado = mysqli_query($conexao, $sql_deleta) &&
-                           mysqli_affected_rows($conexao) == 1) {
-              echo "<p>Registro deletado com successo!";
+          if (mysqli_query($conexao, $sql_deleta) &&
+              mysqli_affected_rows($conexao) == 1) {
+            echo "<p>Registro deletado com successo!";
           }
           else {
-              echo "<p>Erro ao deletar:<br>" .
-              $sql_deleta. "<br>" . mysqli_error($conexao);
+            echo "<p>Erro ao deletar:<br>" .
+            $sql_deleta. "<br>" . mysqli_error($conexao);
+          }
+        }
+
+        if (isset($_GET["adicionar"]) && $_GET["adicionar"]==true) {
+          $sql_adiciona_quantidade  = "UPDATE carrinho
+                                       SET quantidade = quantidade + 1
+                                       WHERE id_carrinho = {$id_carrinho}";
+          if (mysqli_query($conexao, $sql_adiciona_quantidade)) {}
+          else {
+            echo "<p>Erro ao aumentar quantidade:<br>" .
+            $sql_adiciona_quantidade. "<br>" . mysqli_error($conexao);
+          }
+        }
+
+        if (isset($_GET["reduzir"]) && $_GET["reduzir"]==true) {
+          $sql_reduz_quantidade  = "UPDATE carrinho
+                                    SET quantidade = quantidade - 1
+                                    WHERE id_carrinho = {$id_carrinho}";
+          if (mysqli_query($conexao, $sql_reduz_quantidade)) {}
+          else {
+            echo "<p>Erro ao reduzir quantidade:<br>" .
+            $sql_reduz_quantidade. "<br>" . mysqli_error($conexao);
           }
         }
 
@@ -85,12 +111,12 @@
       ?>
 
         <tr><p>
-          <th>id_carrinho</th>
-          <th>id_cliente</th>
+          <th>id</th>
           <th>id_produto</th>
           <th>nome</th>
           <th>preço</th>
-          <th>ações</th>
+          <th>quantidade</th>
+          <th colspan="3">ações</th>
         </tr>
       
       <?php
@@ -99,15 +125,30 @@
       ?>
           <tr>
             <td><?= $produto["id_carrinho"]?></td>
-            <td><?= $id_cliente            ?></td>
             <td><?= $produto["id_produto"] ?></td>
             <td><?= $produto["nome"]       ?></td>
             <td><?= $produto["preco"]      ?></td>
+            <td><?= $produto["quantidade"] ?></td>
             <td>
-              <a href='carrinho.php?
-                         excluir=true&
-                         id_carrinho=<?= $produto["id_carrinho"]?>'>deletar
-              </a>
+              <form accept-charset="utf-8" method=GET action='carrinho.php'>
+                <input type="hidden" name="adicionar"   value=true>
+                <input type="hidden" name="id_carrinho" value=<?= $produto["id_carrinho"]?>>
+                <input type="submit" value="+">
+              </form>
+            </td>
+            <td>
+              <form accept-charset="utf-8" method=GET action='carrinho.php'>
+                <input type="hidden" name="reduzir"     value=true>
+                <input type="hidden" name="id_carrinho" value=<?= $produto["id_carrinho"]?>>
+                <input type="submit" value="-">
+              </form>
+            </td>
+            <td>
+              <form accept-charset="utf-8" method=GET action='carrinho.php'>
+                <input type="hidden" name="excluir"     value=true>
+                <input type="hidden" name="id_carrinho" value=<?= $produto["id_carrinho"]?>>
+                <input type="submit" value="deletar">
+              </form>
             </td>
           </tr>
       <?php

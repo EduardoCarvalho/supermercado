@@ -16,6 +16,12 @@
               </ul>
             </nav>
             <p>
+            <?php 
+              extract($_GET);
+              if (isset($_GET) && $_GET["erro"]==true) {
+                echo "Senha incorreta ou usuário não cadastrado.";
+              }
+            ?>
             <form action="validacao.php" method=POST>
             Login: <input type="text"     name="login"><p>
             Senha: <input type="password" name="senha"><p>
