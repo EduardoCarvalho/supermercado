@@ -26,7 +26,7 @@
     </nav>
     
     <div align="right">
-      <a href="alterar_cadastro.php"><?= $_SESSION["login"]. ","?></a>
+      <a href="ler_cadastro.php"><?= $_SESSION["login"]. ","?></a>
       <a href="logout.php"> sair</a>
     </div>
     
@@ -85,7 +85,7 @@
           $sql_adiciona_quantidade  = "UPDATE carrinho
                                        SET quantidade = quantidade + 1
                                        WHERE id_carrinho = {$id_carrinho}";
-          if (mysqli_query($conexao, $sql_adiciona_quantidade)) {}
+          if (mysqli_query($conexao, $sql_adiciona_quantidade)) {echo "<p><br>";}
           else {
             echo "<p>Erro ao aumentar quantidade:<br>" .
             $sql_adiciona_quantidade. "<br>" . mysqli_error($conexao);
@@ -96,7 +96,7 @@
           $sql_reduz_quantidade  = "UPDATE carrinho
                                     SET quantidade = quantidade - 1
                                     WHERE id_carrinho = {$id_carrinho}";
-          if (mysqli_query($conexao, $sql_reduz_quantidade)) {}
+          if (mysqli_query($conexao, $sql_reduz_quantidade)) {echo "<p><br>";}
           else {
             echo "<p>Erro ao reduzir quantidade:<br>" .
             $sql_reduz_quantidade. "<br>" . mysqli_error($conexao);
@@ -109,15 +109,14 @@
         
         $produtos = mysqli_query($conexao, $sql_leitura);
       ?>
-
-        <tr><p>
-          <th>id</th>
-          <th>id_produto</th>
-          <th>nome</th>
-          <th>preço</th>
-          <th>quantidade</th>
-          <th colspan="3">ações</th>
-        </tr>
+      <tr><p>
+        <th>id</th>
+        <th>id_produto</th>
+        <th>nome</th>
+        <th>preço</th>
+        <th>quantidade</th>
+        <th colspan="3">ações</th>
+      </tr>
       
       <?php
         $linha = 0;
@@ -151,6 +150,7 @@
               </form>
             </td>
           </tr>
+
       <?php
           $linha++;
         endwhile;

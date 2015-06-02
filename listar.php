@@ -27,7 +27,7 @@
       </nav>
       
       <div align="right">
-        <a href="alterar_cadastro.php"><?= $_SESSION["login"]. ","?></a>
+        <a href="ler_cadastro.php"><?= $_SESSION["login"]. ","?></a>
         <a href="logout.php"> sair</a>
       </div>
       
