@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Máquina: localhost
--- Data de Criação: 01-Jun-2015 às 12:09
+-- Data de Criação: 01-Jun-2015 às 22:15
 -- Versão do servidor: 5.5.43-0ubuntu0.14.04.1
 -- versão do PHP: 5.5.9-1ubuntu4.9
 
@@ -32,10 +32,11 @@ CREATE TABLE IF NOT EXISTS `carrinho` (
   `id_produto` int(11) NOT NULL,
   `nome` varchar(100) NOT NULL,
   `preco` decimal(5,2) NOT NULL,
+  `quantidade` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id_carrinho`),
   KEY `id_produto` (`id_produto`),
   KEY `id_cliente` (`id_cliente`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=59 ;
 
 --
 -- RELATIONS FOR TABLE `carrinho`:
@@ -58,7 +59,7 @@ CREATE TABLE IF NOT EXISTS `clientes` (
   `login` varchar(100) NOT NULL,
   `senha` char(32) NOT NULL,
   PRIMARY KEY (`id_cliente`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
 
 -- --------------------------------------------------------
 
