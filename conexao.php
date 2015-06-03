@@ -3,7 +3,7 @@
     
     $conexao = mysqli_connect("localhost",
                               "root",
-                              "senharoot",
+                              "",
                               "supermercado");
 
     mysqli_set_charset($conexao, 'utf8');
