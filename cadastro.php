@@ -24,14 +24,14 @@
     </form>
     <?php
       require 'conexao.php';
-      extract($_POST, EXTR_PREFIX_ALL);
+      extract($_POST, EXTR_SKIP);
 
-      $nome  =     $_POST["nome"];
-      $email =     $_POST["email"];
-      $login =     $_POST["login"];
-      $senha = md5($_POST["senha"]);
+      $nome  = isset($_POST["nome"])  ?     $_POST["nome"]   : "";
+      $email = isset($_POST["email"]) ?     $_POST["email"]  : "";
+      $login = isset($_POST["login"]) ?     $_POST["login"]  : "";
+      $senha = isset($_POST["senha"]) ? md5($_POST["senha"]) : "";
 
-      if (isset($nome) && isset($email) && isset($login) && isset($senha)) {
+      if ($nome && $email && $login && $senha) {
         if ($conexao) {
           $sql_cria  = "INSERT INTO clientes 
                         VALUES (NULL, '{$nome}', '{$email}', '{$login}', '{$senha}')";

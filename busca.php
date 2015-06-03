@@ -39,6 +39,9 @@
       <table width="70%">
         <?php
           require 'conexao.php';
+          extract($_POST, EXTR_SKIP);
+          
+          $termo = isset($_POST["termo"]) ? $_POST["termo"] : "";
 
           if ($conexao) {
             $sql_busca = "SELECT * FROM produtos WHERE nome LIKE '%$termo%'";

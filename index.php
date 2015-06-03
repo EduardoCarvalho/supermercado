@@ -18,7 +18,10 @@
             <p>
             <?php 
               extract($_GET);
-              if (isset($_GET) && $_GET["erro"]==true) {
+
+              $erro = isset($_GET["erro"]) ? $_GET["erro"] : "";
+              
+              if ($erro==true) {
                 echo "Senha incorreta ou usuário não cadastrado.";
               }
             ?>

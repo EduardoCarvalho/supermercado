@@ -38,13 +38,13 @@
     
     <?php
       require 'conexao.php';
-      extract($_POST, EXTR_PREFIX_ALL);
+      extract($_POST, EXTR_SKIP);
 
-      $id_cliente =     $_SESSION["id_cliente"];
-      $nome       =     $_POST["nome"];
-      $email      =     $_POST["email"];
-      $login      =     $_POST["login"];
-      $senha      = md5($_POST["senha"]);
+      $id_cliente = isset($_SESSION["id_cliente"]) ?     $_SESSION["id_cliente"] : "";
+      $nome       = isset($_POST["nome"])          ?     $_POST["nome"]          : "";
+      $email      = isset($_POST["email"])         ?     $_POST["email"]         : "";
+      $login      = isset($_POST["login"])         ?     $_POST["login"]         : "";
+      $senha      = isset($_POST["senha"])         ? md5($_POST["senha"])        : "";
 
       if ($conexao) {
         $sql_altera  = "UPDATE clientes

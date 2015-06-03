@@ -35,17 +35,17 @@
     <table id="t01" border="1">
       <?php
         require 'conexao.php';
-        extract($_POST, EXTR_PREFIX_ALL);
         extract($_GET);
+        extract($_POST, EXTR_SKIP);
 
-        $id_produto = $_POST["id_produto"];
-        $id_cliente = $_SESSION["id_cliente"];
-        $nome       = $_POST["nome"];
-        $preco      = $_POST["preco"];
-        $quantidade = $_POST["quantidade"];
+        $id_carrinho = isset($_GET["id_carrinho"])    ? $_GET["id_carrinho"]    : "";
+        $id_produto  = isset($_POST["id_produto"])    ? $_POST["id_produto"]    : "";
+        $id_cliente  = isset($_SESSION["id_cliente"]) ? $_SESSION["id_cliente"] : "";
+        $nome        = isset($_POST["nome"])          ? $_POST["nome"]          : "";
+        $preco       = isset($_POST["preco"])         ? $_POST["preco"]         : "";
+        $quantidade  = isset($_POST["quantidade"])    ? $_POST["quantidade"]    : "";
 
-
-        if (isset($id_produto)) {
+        if ($id_produto) {
           if ($conexao) {
             $sql_cria  = "INSERT INTO carrinho
                           VALUES (NULL, {$id_cliente},
@@ -67,21 +67,9 @@
           }
         }
 
-        if (isset($_GET["excluir"]) && $_GET["excluir"]==true) {
-          $sql_deleta  = "DELETE FROM carrinho 
-                          WHERE id_carrinho = {$id_carrinho} 
-                          LIMIT 1";
-          if (mysqli_query($conexao, $sql_deleta) &&
-              mysqli_affected_rows($conexao) == 1) {
-            echo "<p>Registro deletado com successo!";
-          }
-          else {
-            echo "<p>Erro ao deletar:<br>" .
-            $sql_deleta. "<br>" . mysqli_error($conexao);
-          }
-        }
+        $adicionar = isset($_GET["adicionar"]) ? $_GET["adicionar"] : "";
 
-        if (isset($_GET["adicionar"]) && $_GET["adicionar"]==true) {
+        if ($adicionar==true) {
           $sql_adiciona_quantidade  = "UPDATE carrinho
                                        SET quantidade = quantidade + 1
                                        WHERE id_carrinho = {$id_carrinho}";
@@ -92,7 +80,9 @@
           }
         }
 
-        if (isset($_GET["reduzir"]) && $_GET["reduzir"]==true) {
+        $reduzir = isset($_GET["reduzir"]) ? $_GET["reduzir"] : "";
+
+        if ($reduzir==true) {
           $sql_reduz_quantidade  = "UPDATE carrinho
                                     SET quantidade = quantidade - 1
                                     WHERE id_carrinho = {$id_carrinho}";
@@ -100,6 +90,22 @@
           else {
             echo "<p>Erro ao reduzir quantidade:<br>" .
             $sql_reduz_quantidade. "<br>" . mysqli_error($conexao);
+          }
+        }
+
+        $excluir = isset($_GET["excluir"]) ? $_GET["excluir"] : "";
+
+        if ($excluir==true) {
+          $sql_deleta  = "DELETE FROM carrinho 
+                          WHERE id_carrinho = {$id_carrinho} 
+                          LIMIT 1";
+          if (mysqli_query($conexao, $sql_deleta) &&
+              mysqli_affected_rows($conexao) == 1) {
+            echo "<p>Registro deletado com successo!";
+          }
+          else {
+            echo "<p>Erro ao deletar:<br>" .
+            $sql_deleta. "<br>" . mysqli_error($conexao);
           }
         }
 

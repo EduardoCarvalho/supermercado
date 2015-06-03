@@ -30,7 +30,7 @@
     <?php
       require 'conexao.php';
 
-      $id_cliente = $_SESSION["id_cliente"];
+      $id_cliente = isset($_SESSION["id_cliente"]) ? $_SESSION["id_cliente"] : "";
       $sql_preenche_formulario  = "SELECT * 
                                    FROM clientes
                                    WHERE id_cliente = {$id_cliente}";
