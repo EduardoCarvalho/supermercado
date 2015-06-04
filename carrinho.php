@@ -109,6 +109,22 @@
           }
         }
 
+        $limpar = isset($_GET["limpar"]) ? $_GET["limpar"] : "";
+
+        if ($limpar==true) {
+          $sql_limpa  = "DELETE
+                         FROM carrinho
+                         WHERE id_cliente = {$id_cliente}";
+          if (mysqli_query($conexao, $sql_limpa)) {
+            echo "<p>Carrinho vazio!";
+          }
+          else {
+            echo "<p>Erro ao limpar carrinho:<br>" .
+            $sql_limpa. "<br>" . mysqli_error($conexao);
+          }
+        }
+
+
         $sql_leitura  = "SELECT * FROM carrinho 
                          WHERE id_cliente = {$id_cliente} 
                          ORDER BY id_carrinho ASC";
@@ -156,12 +172,19 @@
               </form>
             </td>
           </tr>
-
       <?php
           $linha++;
         endwhile;
-        mysqli_close($conexao);
       ?>
     </table>
+    <p>
+    <form accept-charset="utf-8" method=GET action='carrinho.php'>
+      <input type="hidden" name="limpar"      value=true>
+      <input type="hidden" name="id_cliente"  value=<?= $produto["id_cliente"]?>>
+      <input type="submit" value="limpar carrinho">
+    </form>
+      <?php
+        mysqli_close($conexao);
+      ?>
   </body>
 </html>
