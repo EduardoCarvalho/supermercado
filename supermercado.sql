@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Máquina: localhost
--- Data de Criação: 04-Jun-2015 às 23:54
+-- Data de Criação: 05-Jun-2015 às 19:26
 -- Versão do servidor: 5.5.43-0ubuntu0.14.04.1
 -- versão do PHP: 5.5.9-1ubuntu4.9
 
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `carrinho` (
   PRIMARY KEY (`id_carrinho`),
   KEY `id_produto` (`id_produto`),
   KEY `id_cliente` (`id_cliente`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=39 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=72 ;
 
 --
 -- RELATIONS FOR TABLE `carrinho`:
@@ -47,6 +47,20 @@ CREATE TABLE IF NOT EXISTS `carrinho` (
 --       `clientes` -> `id_cliente`
 --
 
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `carrinho_groupby`
+--
+CREATE TABLE IF NOT EXISTS `carrinho_groupby` (
+`id_carrinho` int(11)
+,`id_cliente` int(11)
+,`id_produto` int(11)
+,`nome` varchar(100)
+,`preco` decimal(5,2)
+,`quantidade` int(11) unsigned
+,`subtotal` decimal(6,2)
+);
 -- --------------------------------------------------------
 
 --
@@ -60,7 +74,7 @@ CREATE TABLE IF NOT EXISTS `clientes` (
   `login` varchar(100) NOT NULL,
   `senha` char(32) NOT NULL,
   PRIMARY KEY (`id_cliente`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 -- --------------------------------------------------------
 
@@ -108,6 +122,15 @@ INSERT INTO `produtos` (`id_produto`, `nome`, `preco`, `imagem`) VALUES
 (52, 'Bisnaguinha', 2.00, '/supermercado/Imagens/Fotos/25.png'),
 (53, 'Mortadela', 7.00, '/supermercado/Imagens/Fotos/26.png'),
 (54, 'Alface', 2.40, '/supermercado/Imagens/Fotos/27.png ');
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `carrinho_groupby`
+--
+DROP TABLE IF EXISTS `carrinho_groupby`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `carrinho_groupby` AS select `carrinho`.`id_carrinho` AS `id_carrinho`,`carrinho`.`id_cliente` AS `id_cliente`,`carrinho`.`id_produto` AS `id_produto`,`carrinho`.`nome` AS `nome`,`carrinho`.`preco` AS `preco`,`carrinho`.`quantidade` AS `quantidade`,`carrinho`.`subtotal` AS `subtotal` from `carrinho` where (`carrinho`.`id_cliente` = `carrinho`.`id_cliente`) group by `carrinho`.`id_produto`;
 
 --
 -- Constraints for dumped tables

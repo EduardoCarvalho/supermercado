@@ -138,11 +138,20 @@
           }
         }
 
-        $sql_leitura  = "SELECT * FROM carrinho 
-                         WHERE id_cliente = {$id_cliente} 
+        $sql_leitura  = "SELECT * FROM carrinho
+                         WHERE id_cliente = {$id_cliente}
+                         GROUP BY id_produto
                          ORDER BY id_carrinho ASC";
-        
+
         $produtos = mysqli_query($conexao, $sql_leitura);
+        
+        $sql_calcula_total = "SELECT SUM(subtotal)
+                              AS total
+                              FROM carrinho_groupby
+                              WHERE id_cliente = {$id_cliente}";
+
+        $total = mysqli_fetch_assoc(mysqli_query($conexao, $sql_calcula_total));
+
       ?>
       <tr><p>
         <th>id</th>
@@ -191,6 +200,11 @@
           $linha++;
         endwhile;
       ?>
+      <p>
+      <tr>
+        <th colspan="5">TOTAL</th>
+        <th><?= "R$ ".$total["total"] ?></th>
+      </tr>
     </table>
     <p>
     <form accept-charset="utf-8" method=GET action='carrinho.php'>
