@@ -44,6 +44,7 @@
         $nome        = isset($_POST["nome"])          ? $_POST["nome"]          : "";
         $preco       = isset($_POST["preco"])         ? $_POST["preco"]         : "";
         $quantidade  = isset($_POST["quantidade"])    ? $_POST["quantidade"]    : "";
+        $subtotal    = isset($_POST["subtotal"])      ? $_POST["subtotal"]      : "";
 
         if ($id_produto) {
           if ($conexao) {
@@ -52,7 +53,8 @@
                                         {$id_produto},
                                        '{$nome}',
                                         {$preco},
-                                        {$quantidade})";
+                                        {$quantidade},
+                                        {$preco}*{$quantidade})";
           }
           else {
             exit("<p>Falha na conexão: " . mysqli_connect_error());
@@ -66,6 +68,7 @@
             $sql_cria . "<br>" . mysqli_error($conexao);
           }
         }
+
 
         $adicionar = isset($_GET["adicionar"]) ? $_GET["adicionar"] : "";
 
@@ -124,6 +127,16 @@
           }
         }
 
+        if ($adicionar==true || $reduzir==true) {
+          $sql_calcula_subtotal = "UPDATE carrinho
+                                   SET subtotal = preco * quantidade
+                                   WHERE id_carrinho = {$id_carrinho}";
+          if (mysqli_query($conexao, $sql_calcula_subtotal)) {}
+          else {
+            echo "<p>Erro ao calcular subtotal:<br>" .
+            $sql_calcula_subtotal. "<br>" . mysqli_error($conexao);
+          }
+        }
 
         $sql_leitura  = "SELECT * FROM carrinho 
                          WHERE id_cliente = {$id_cliente} 
@@ -137,6 +150,7 @@
         <th>nome</th>
         <th>preço</th>
         <th>quantidade</th>
+        <th>subtotal</th>
         <th colspan="3">ações</th>
       </tr>
       
@@ -150,6 +164,7 @@
             <td><?= $produto["nome"]       ?></td>
             <td><?= $produto["preco"]      ?></td>
             <td><?= $produto["quantidade"] ?></td>
+            <td><?= $produto["subtotal"]   ?></td>
             <td>
               <form accept-charset="utf-8" method=GET action='carrinho.php'>
                 <input type="hidden" name="adicionar"   value=true>

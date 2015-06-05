@@ -68,6 +68,9 @@
                 <input type="hidden"
                        name="quantidade"
                        value=1><br>
+                <!-- <input type="hidden"
+                       name="subtotal"
+                       value="<?= $produto["preco"]*1?>"><br> -->
                 <label for="preco"><?= "R$ ".$produto["preco"]?></label>
               </form>
               <img src="<?= $produto["imagem"]?>" width=180 height=180>
